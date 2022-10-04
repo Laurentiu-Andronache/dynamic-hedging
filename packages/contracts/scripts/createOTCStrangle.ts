@@ -39,7 +39,7 @@ async function main() {
 		)
 
 		const callOption = {
-			expiration: "1665820800",
+			expiration: "1666598400",
 			// Need to update to give a value in the orderBounds defined on optionHandler.
 			strike: BigNumber.from("1350").mul(RYSK_DECIMAL),
 			isPut: false,
@@ -51,7 +51,7 @@ async function main() {
 		const callQuote = BigNumber.from((25 * RYSK_EXP).toString())
 
 		const putOption = {
-			expiration: "1665820800",
+			expiration: "1666598400",
 			// Need to update to give a value in the orderBounds defined on optionHandler.
 			strike: BigNumber.from("1350").mul(RYSK_DECIMAL),
 			isPut: true,

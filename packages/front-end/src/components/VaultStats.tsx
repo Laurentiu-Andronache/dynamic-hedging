@@ -8,15 +8,16 @@ import { gql, useQuery } from "@apollo/client";
 
 export const VaultStats = () => {
 
-  const [cumulativeYield, setcumulativeYield] = useState(0);
+  const [cumulativeYield, setcumulativeYield] = useState(Number);
 
 
   const getMetrics = (data: any) => {
 
+    const cumulativeYield = data?.dailyStatSnapshots.find( (item: { id: string; }) => item.id === "last" )?.cumulativeYield
 
-    console.log(data)
+    const percentageCumulativeYield = Number(cumulativeYield) * 100
 
-    setcumulativeYield(100);
+    setcumulativeYield( percentageCumulativeYield );
   };
 
     useQuery(
@@ -53,7 +54,7 @@ export const VaultStats = () => {
             />
             <RyskTooltip
               id="yieldTip"
-              message={`Sum of ${DHV_NAME} returns since inception (Sept 30th 2022)`}
+              message={`Sum of ${DHV_NAME} returns since inception (Sept 2022)`}
             />
             {/* Soon™️ */}
           </p>
@@ -66,10 +67,10 @@ export const VaultStats = () => {
             Learn more
           </a> */}
         </div>
-        <div className="flex flex-col items-left justify-center h-full mb-8 lg:mb-0">
+        {/* <div className="flex flex-col items-left justify-center h-full mb-8 lg:mb-0">
           <p className="mb-2 text-xl">
             Projected APY:{" "}
-            {/* <NumberFormat
+            <NumberFormat
               value={"%"}
               displayType={"text"}
               decimalScale={2}
@@ -79,18 +80,17 @@ export const VaultStats = () => {
             <RyskTooltip
               id="apyTip"
               message="Based on historical returns and the current options exposure"
-            /> */}
-            Soon™️
+            />
           </p>
-          {/* <a
+          <a
             href="https://docs.rysk.finance"
             className="underline text-center"
             target="_blank"
             rel="noreferrer"
           >
             Learn more
-          </a> */}
-        </div>
+          </a>
+        </div> */}
       </div>
     </div>
   );
