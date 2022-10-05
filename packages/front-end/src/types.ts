@@ -90,3 +90,9 @@ export enum Currency {
   RYSK = "RYSK",
   OPYN = "OPYN",
 }
+
+export type ChartData = {
+  date: string;
+  cumulativeYield: number
+};
+

@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
   Label,
 } from "recharts";
+import { ChartData } from "../types";
 // const data = [
 //   { date: "Jul 1", cumulativeYield: 0.41, pv: 2400, amt: 2400 },
 //   { date: "Jul 8", cumulativeYield: 0.94, pv: 2400, amt: 2400 },
@@ -19,10 +20,6 @@ import {
 //   { date: "Jul 29", cumulativeYield: 1.93, pv: 2400, amt: 2400 },
 //   { date: "Aug 6", cumulativeYield: 2.24, pv: 2400, amt: 2400 },
 // ];
-
-const data = [
-  { date: "", cumulativeYield: 0, pv: 2400, amt: 2400 }
-];
 
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -37,14 +34,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export const VaultChart = () => {
+export const VaultChart: React.FC<{ historicalData: any }> = ({
+  historicalData
+}) => {
+
   return (
     <div className="pb-8 py-12 px-8 flex flex-col lg:flex-row h-full">
       <div className="flex h-full w-full justify-around">
         <ResponsiveContainer width={"95%"} height={400}>
           <LineChart
-            data={data}
-            margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+            data={historicalData}
+            margin={{ top: 5, right: 20, bottom: 5, left: 40 }}
           >
             <Tooltip content={<CustomTooltip />} />
             <Line
@@ -53,13 +53,13 @@ export const VaultChart = () => {
               stroke="black"
             />
             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis dataKey="date" angle={-45} />
+            <XAxis dataKey="date" angle={0} />
             <YAxis>
               <Label
                 angle={-90}
                 value="Cumulative Yield (%)"
                 position="center"
-                dx={-20}
+                dx={-50}
               />
             </YAxis>
             <Tooltip />
