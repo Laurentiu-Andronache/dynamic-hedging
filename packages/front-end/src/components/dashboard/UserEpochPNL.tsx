@@ -122,6 +122,11 @@ export const UserEpochPNL = () => {
             const sharesWithdraw =
               amountsByEpoch[ppsEpoch.id]?.sharesWithdraw || "0";
 
+            const sharesWithdrawAsCollateral = BigNumber.from(sharesWithdraw)
+              .div(ppsEpoch.value)
+              .mul(BIG_NUMBER_DECIMALS.RYSK) // back to RYSK (18) based
+              .div(BIG_NUMBER_DECIMALS.RYSK.div(BIG_NUMBER_DECIMALS.USDC)); // now USDC (6) based
+
             const collateralDepositInRyskDecimals = BigNumber.from(
               collateralDeposit
             ).mul(BIG_NUMBER_DECIMALS.RYSK.div(BIG_NUMBER_DECIMALS.USDC));
@@ -158,6 +163,9 @@ export const UserEpochPNL = () => {
 
             tempPNL.push({
               shares: s.toString(),
+              change: BigNumber.from(collateralDeposit)
+                .sub(sharesWithdrawAsCollateral)
+                .toString(),
               pnl: totalPNL.toString(),
               timestamp: ppsEpoch.timestamp,
               dateLocale: dateLocale,
