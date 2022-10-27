@@ -254,6 +254,7 @@ export const UserEpochPNL = () => {
                         domain={["dataMin", "dataMax"]}
                         dataKey="timestamp"
                         angle={0}
+                        minTickGap={15}
                         tickFormatter={(value: string) => {
                           const date = new Date(parseInt(value) * 1000);
                           return date.toLocaleString("default", {
