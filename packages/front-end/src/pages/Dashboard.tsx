@@ -2,7 +2,6 @@ import { UserVault } from "../components/dashboard/UserVault";
 import { UserOptionsList } from "../components/dashboard/UserOptionsList";
 import { UserEpochPNL } from "../components/dashboard/UserEpochPNL";
 
-
 export const Dashboard = () => {
   return (
     <div className="col-start-1 col-end-17">
