@@ -162,13 +162,13 @@ export const OTCPageContent = () => {
     signer,
   ]);
 
-  useEffect(() => {
-    if (account && order) {
-      if (account.toLowerCase() !== order.buyer.toLowerCase()) {
-        setError(`❌ Please connect with account ${order.buyer}`);
-      }
-    }
-  }, [account, order]);
+  // useEffect(() => {
+  //   if (account && order) {
+  //     if (account.toLowerCase() !== order.buyer.toLowerCase()) {
+  //       setError(`❌ Please connect with account ${order.buyer}`);
+  //     }
+  //   }
+  // }, [account, order]);
 
   // Regular order handlers
   const handleApprove = useCallback(async () => {
