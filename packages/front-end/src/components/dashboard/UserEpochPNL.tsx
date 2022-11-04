@@ -206,6 +206,11 @@ export const UserEpochPNL = () => {
     }
   );
 
+  // we decided to hide the tab completely if there is no PNL
+  if (!historicalPNL || historicalPNL[historicalPNL.length - 1]?.pnl == "0") {
+    return null;
+  }
+
   return (
     <div className="mb-24">
       <Card
