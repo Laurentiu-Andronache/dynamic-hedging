@@ -50,6 +50,7 @@
 	},
 	"dependencies": {
 		"@chainlink/contracts": "^0.4.0",
+		"@ethereum-waffle/mock-contract": "^3.4.4",
 		"@nomicfoundation/hardhat-network-helpers": "^1.0.6",
 		"@openzeppelin/contracts": "^4.4.2",
 		"@prb/math": "^3.0.0",
