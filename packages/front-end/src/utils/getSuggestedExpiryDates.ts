@@ -1,7 +1,8 @@
 export const getSuggestedExpiryDates = () => {
   const now = new Date();
 
-  const nextFriday = getClosestFridayToDate(now);
+  const followingFriday = getClosestFridayToDate(now);
+  followingFriday.setDate(followingFriday.getDate() + 7);
 
   const nextMonth = new Date(now);
   nextMonth.setDate(now.getDate() + 30);
@@ -11,7 +12,21 @@ export const getSuggestedExpiryDates = () => {
   threeMonths.setDate(now.getDate() + 90);
   const threeMonthsFriday = getClosestFridayToDate(threeMonths);
 
-  return [nextFriday, nextMonthFriday, threeMonthsFriday];
+  const sixMonths = new Date(now);
+  sixMonths.setDate(now.getDate() + 180);
+  const sixMonthsFriday = getClosestFridayToDate(sixMonths);
+
+  const nineMonths = new Date(now);
+  nineMonths.setDate(now.getDate() + 270);
+  const nineMonthsFriday = getClosestFridayToDate(nineMonths);
+
+  return [
+    followingFriday,
+    nextMonthFriday,
+    threeMonthsFriday,
+    sixMonthsFriday,
+    nineMonthsFriday,
+  ];
 };
 
 export const getClosestFridayToDate = (date: Date) => {
