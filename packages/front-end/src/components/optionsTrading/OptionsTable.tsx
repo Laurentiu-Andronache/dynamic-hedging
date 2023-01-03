@@ -21,12 +21,19 @@ import { toWei, fromWei } from "../../utils/conversion-helper";
 import NumberFormat from "react-number-format";
 import addresses from "../../contracts.json";
 import { useWalletContext } from "../../App";
-import { ERC20 } from "../../types/ERC20";
-import { PortfolioValuesFeed } from "../../types/PortfolioValuesFeed";
-import { PriceFeed } from "../../types/PriceFeed";
-import { LiquidityPool } from "../../types/LiquidityPool";
-import { OptionRegistry } from "../../types/OptionRegistry";
+import {
+  ERC20,
+  PortfolioValuesFeed,
+  PriceFeed,
+  LiquidityPool,
+  OptionRegistry,
+} from "../../types/index";
 import { ContractAddresses, ETHNetwork } from "../../types";
+
+const isNotTwoDigitsZero = (price: number) => {
+  // TODO: Not sure this makes sense, come back to it after figuring out pricing
+  return price.toFixed(2) != "0.00";
+};
 
 const suggestedCallOptionPriceDiff = [-100, 0, 100, 200, 300, 400, 600, 800];
 const suggestedPutOptionPriceDiff = [
@@ -178,16 +185,16 @@ export const OptionsTable: React.FC = () => {
           <th colSpan={5}>PUTS</th>
         </tr>
         <tr className="text-center">
-          <th className="py-2">IV (Bid)</th>
-          <th className="">Sell</th>
-          <th className="">Buy</th>
-          <th>IV (Ask)</th>
+          <th className="py-2">Bid IV</th>
+          <th className="">Bid</th>
+          <th className="">Ask</th>
+          <th>Ask IV</th>
           <th>Delta</th>
-          <th className="bg-bone-dark border-x border-black">Strike ($)</th>
-          <th>IV (Bid)</th>
-          <th className="">Sell</th>
-          <th className="">Buy</th>
-          <th>IV (Ask)</th>
+          <th className="bg-bone-dark border-x border-black">Strike</th>
+          <th>Bid IV</th>
+          <th className="">Bid</th>
+          <th className="">Ask</th>
+          <th>Ask IV</th>
           <th>Delta</th>
         </tr>
       </thead>
@@ -202,7 +209,7 @@ export const OptionsTable: React.FC = () => {
           >
             <td className="pr-4">
               <NumberFormat
-                value={option.IV}
+                value={isNotTwoDigitsZero(option.IV) ? option.IV : "-"}
                 displayType={"text"}
                 decimalScale={2}
                 suffix={"%"}
@@ -210,21 +217,23 @@ export const OptionsTable: React.FC = () => {
             </td>
             <td className="pr-4 text-red-700">
               <NumberFormat
-                value={option.price}
+                value={isNotTwoDigitsZero(option.price) ? option.price : ""}
                 displayType={"text"}
                 decimalScale={2}
+                prefix={"$"}
               />
             </td>
             <td className="pr-4 text-green-700">
               <NumberFormat
-                value={option.price}
+                value={isNotTwoDigitsZero(option.price) ? option.price : ""}
                 displayType={"text"}
                 decimalScale={2}
+                prefix={"$"}
               />
             </td>
             <td className="pr-4">
               <NumberFormat
-                value={option.IV}
+                value={isNotTwoDigitsZero(option.IV) ? option.IV : "-"}
                 displayType={"text"}
                 decimalScale={2}
                 suffix={"%"}
@@ -237,13 +246,13 @@ export const OptionsTable: React.FC = () => {
                 decimalScale={2}
               />
             </td>
-            <td className="text-center bg-bone-dark border-x border-black">
+            <td className="w-20 text-center bg-bone-dark border-x border-black">
               {option.strike}
             </td>
             {/** TODO numbers below are same as calls here */}
             <td className="pr-4">
               <NumberFormat
-                value={option.IV}
+                value={isNotTwoDigitsZero(option.IV) ? option.IV : "-"}
                 displayType={"text"}
                 decimalScale={2}
                 suffix={"%"}
@@ -251,21 +260,23 @@ export const OptionsTable: React.FC = () => {
             </td>
             <td className="pr-4 text-red-700">
               <NumberFormat
-                value={option.price}
+                value={isNotTwoDigitsZero(option.price) ? option.price : ""}
                 displayType={"text"}
                 decimalScale={2}
+                prefix={"$"}
               />
             </td>
             <td className="pr-4 text-green-700">
               <NumberFormat
-                value={option.price}
+                value={isNotTwoDigitsZero(option.price) ? option.price : ""}
                 displayType={"text"}
                 decimalScale={2}
+                prefix={"$"}
               />
             </td>
             <td className="pr-4">
               <NumberFormat
-                value={option.IV}
+                value={isNotTwoDigitsZero(option.IV) ? option.IV : "-"}
                 displayType={"text"}
                 decimalScale={2}
                 suffix={"%"}
