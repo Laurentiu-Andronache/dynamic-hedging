@@ -60,6 +60,10 @@ contract ReferralCode is AccessControl {
         }
     }
 
+    function getReferralCode(bytes32 code) external view returns (CodeDetails memory) {
+        return codeDetails[code];
+    }
+    
     function _isAuth() internal view {
 		if (!auth[msg.sender]) {
 			revert NotAuth();

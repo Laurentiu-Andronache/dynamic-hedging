@@ -30,7 +30,6 @@ import "prb-math/contracts/PRBMathUD60x18.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import { IOtoken, IController } from "./interfaces/GammaInterface.sol";
-import "hardhat/console.sol";
 
 /**
  *  @title Contract used for all user facing options interactions
@@ -567,7 +566,8 @@ contract OptionExchange is Pausable, AccessControl, ReentrancyGuard, IHedgingRea
 		(uint256 premium, int256 delta, uint256 fee) = pricer.quoteOptionPrice(
 			seriesToStore,
 			_args.amount,
-			false
+			false,
+			_args.referralCode
 		);
 		_handlePremiumTransfer(premium, fee);
 		// get what our long exposure is on this asset, as this can be used instead of the dhv having to lock up collateral
@@ -623,11 +623,11 @@ contract OptionExchange is Pausable, AccessControl, ReentrancyGuard, IHedgingRea
 			optionRegistry,
 			true
 		);
-		// get the unit price for premium and delta
 		(sellParams.premium, sellParams.delta, sellParams.fee) = pricer.quoteOptionPrice(
 			sellParams.seriesToStore,
 			_args.amount,
-			true
+			true,
+			_args.referralCode
 		);
 		sellParams.amount = _args.amount;
 		sellParams.tempHoldings = heldTokens[msg.sender][sellParams.seriesAddress];

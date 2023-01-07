@@ -8,6 +8,7 @@ import { MintableERC20 } from "../types/MintableERC20"
 import { OptionRegistry } from "../types/OptionRegistry"
 import { AlphaPortfolioValuesFeed, PortfolioValuesStruct } from "../types/AlphaPortfolioValuesFeed"
 import { PriceFeed } from "../types/PriceFeed"
+import { ReferralCode } from "../types/ReferralCode"
 import { LiquidityPool } from "../types/LiquidityPool"
 import { WETH } from "../types/WETH"
 import { Protocol } from "../types/Protocol"
@@ -238,6 +239,10 @@ export async function deployLiquidityPool(
 	await pvFeed.fulfill(weth.address, usd.address)
 	const AccountingFactory = await ethers.getContractFactory("Accounting")
 	const Accounting = (await AccountingFactory.deploy(liquidityPool.address)) as Accounting
+	const ReferralCodeFactory = await ethers.getContractFactory("ReferralCode")
+	const referralCode = (await ReferralCodeFactory.deploy(
+		authority
+	)) as ReferralCode
 	const PricerFactory = await ethers.getContractFactory("BeyondPricer", {
 		libraries: {
 			BlackScholes: blackScholesDeploy.address
@@ -246,7 +251,8 @@ export async function deployLiquidityPool(
 	const pricer = (await PricerFactory.deploy(
 		authority,
 		optionProtocol.address,
-		liquidityPool.address
+		liquidityPool.address,
+		referralCode.address
 	)) as BeyondPricer
 	await optionProtocol.changeAccounting(Accounting.address)
 	// deploy libraries
@@ -277,6 +283,7 @@ export async function deployLiquidityPool(
 		liquidityPool: liquidityPool,
 		exchange: exchange,
 		accounting: Accounting,
-		pricer: pricer
+		pricer: pricer,
+		referralCode: referralCode
 	}
 }

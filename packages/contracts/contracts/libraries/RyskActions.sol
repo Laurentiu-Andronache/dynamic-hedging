@@ -37,7 +37,7 @@ library RyskActions {
         uint256 amount;
         // option series (if any)
         Types.OptionSeries optionSeries;
-        // any other data that needs to be passed in for arbitrary function calls
+        // referral code
         bytes data;
     }
 
@@ -55,6 +55,8 @@ library RyskActions {
         uint256 amount;
         // recipient of the options
         address recipient;
+        // referral code
+        bytes32 referralCode;
     }
 
     struct SellOptionArgs {
@@ -68,6 +70,8 @@ library RyskActions {
         uint256 amount;
         // recipient of premium
         address recipient;
+        // referral code
+        bytes32 referralCode;
     }
 
     /**
@@ -87,13 +91,14 @@ library RyskActions {
      */
     function _parseBuyOptionArgs(ActionArgs memory _args) internal pure returns (BuyOptionArgs memory) {
         require(_args.actionType == ActionType.BuyOption, "A3");
-        
+        bytes32 referralCode = bytes32(_args.data);
         return
             BuyOptionArgs({
                 optionSeries: _args.optionSeries,
                 seriesAddress: _args.asset,
                 amount: _args.amount,
-                recipient: _args.secondAddress
+                recipient: _args.secondAddress,
+                referralCode: referralCode
             });
     }
 
@@ -105,14 +110,15 @@ library RyskActions {
      */
     function _parseSellOptionArgs(ActionArgs memory _args) internal pure returns (SellOptionArgs memory) {
         require(_args.actionType == ActionType.SellOption || _args.actionType == ActionType.CloseOption, "A4");
-
+        bytes32 referralCode = bytes32(_args.data);
         return
             SellOptionArgs({
                 optionSeries: _args.optionSeries,
                 seriesAddress: _args.asset,
                 vaultId: _args.vaultId,
                 amount: _args.amount,
-                recipient: _args.secondAddress
+                recipient: _args.secondAddress,
+                referralCode: referralCode
             });
     }
 
