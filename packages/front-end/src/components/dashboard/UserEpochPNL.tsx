@@ -74,7 +74,7 @@ export const UserEpochPNL = () => {
   useQuery(
     gql`
             query {
-                pricePerShares {
+                pricePerShares (orderBy: timestamp) {
                     id
                     growthSinceFirstEpoch
                     value
@@ -230,7 +230,7 @@ export const UserEpochPNL = () => {
                       <Line
                         type="monotone"
                         dataKey={({ pnl }) =>
-                          utils.formatUnits(pnl, DECIMALS.USDC)
+                          parseFloat(utils.formatUnits(pnl, DECIMALS.USDC))
                         }
                         // TODO access color throw Tailwind helpers
                         stroke="black"
