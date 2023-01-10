@@ -217,7 +217,7 @@ export const UserEpochPNL = () => {
         tabWidth={280}
         tabs={[
           {
-            label: "RYSK.PnL",
+            label: "RYSK.P/L",
             content: (
               <div className="pb-8 py-12 px-8 flex flex-col lg:flex-row h-full">
                 <div className="flex h-full w-full justify-around">
