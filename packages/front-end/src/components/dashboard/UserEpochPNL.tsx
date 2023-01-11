@@ -227,6 +227,11 @@ export const UserEpochPNL = () => {
                       data={historicalPNL}
                       margin={{ top: 5, right: 40, bottom: 5, left: 20 }}
                     >
+                      <YAxis yAxisId="left" />
+                      <YAxis yAxisId="right" orientation="right" />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend verticalAlign="bottom" formatter={() => "PNL"} />
+                      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                       <Bar
                         yAxisId="right"
                         barSize={20}
@@ -248,7 +253,6 @@ export const UserEpochPNL = () => {
                         strokeWidth={2}
                         dot={false}
                       />
-                      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                       <XAxis
                         type="number"
                         scale="time"
@@ -265,10 +269,6 @@ export const UserEpochPNL = () => {
                           });
                         }}
                       />
-                      <YAxis yAxisId="left" />
-                      <YAxis yAxisId="right" orientation="right" />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend verticalAlign="bottom" formatter={() => "PNL"} />
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
