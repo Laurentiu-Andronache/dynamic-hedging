@@ -230,19 +230,12 @@ export const UserEpochPNL = () => {
                       <YAxis yAxisId="left" />
                       <YAxis yAxisId="right" orientation="right" />
                       <Tooltip content={<CustomTooltip />} />
-                      <Legend verticalAlign="bottom" formatter={() => "PNL"} />
+                      <Legend verticalAlign="bottom" />
                       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                      <Bar
-                        yAxisId="right"
-                        barSize={20}
-                        fill="#413ea0"
-                        dataKey={({ change }) =>
-                          parseFloat(utils.formatUnits(change, DECIMALS.USDC))
-                        }
-                      />
 
                       {/** TODO might want to show Line of user USDC position over epochs */}
                       <Line
+                        name="P/L"
                         yAxisId="left"
                         type="monotone"
                         dataKey={({ pnl }) =>
@@ -252,6 +245,18 @@ export const UserEpochPNL = () => {
                         stroke="black"
                         strokeWidth={2}
                         dot={false}
+                        legendType="line"
+                      />
+                      <Bar
+                        name="D/W"
+                        legendType="rect"
+                        yAxisId="right"
+                        /** TODO bar size doesn't work with current scale and type on xAxis */
+                        barSize={20}
+                        fill={"#64748b"}
+                        dataKey={({ change }) =>
+                          parseFloat(utils.formatUnits(change, DECIMALS.USDC))
+                        }
                       />
                       <XAxis
                         type="number"
