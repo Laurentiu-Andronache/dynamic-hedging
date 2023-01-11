@@ -4,7 +4,6 @@ import { BigNumber, utils } from "ethers/lib/ethers";
 import NumberFormat from "react-number-format";
 import { BIG_NUMBER_DECIMALS, DECIMALS } from "../../config/constants";
 import {
-  LineChart,
   Line,
   XAxis,
   YAxis,
@@ -12,6 +11,8 @@ import {
   ResponsiveContainer,
   Legend,
   CartesianGrid,
+  ComposedChart,
+  Bar,
 } from "recharts";
 import { Card } from "../shared/Card";
 import { useWalletContext } from "../../App";
@@ -222,12 +223,22 @@ export const UserEpochPNL = () => {
               <div className="pb-8 py-12 px-8 flex flex-col lg:flex-row h-full">
                 <div className="flex h-full w-full justify-around">
                   <ResponsiveContainer width={"95%"} height={400}>
-                    <LineChart
+                    <ComposedChart
                       data={historicalPNL}
                       margin={{ top: 5, right: 40, bottom: 5, left: 20 }}
                     >
+                      <Bar
+                        yAxisId="right"
+                        barSize={20}
+                        fill="#413ea0"
+                        dataKey={({ change }) =>
+                          parseFloat(utils.formatUnits(change, DECIMALS.USDC))
+                        }
+                      />
+
                       {/** TODO might want to show Line of user USDC position over epochs */}
                       <Line
+                        yAxisId="left"
                         type="monotone"
                         dataKey={({ pnl }) =>
                           parseFloat(utils.formatUnits(pnl, DECIMALS.USDC))
@@ -242,6 +253,7 @@ export const UserEpochPNL = () => {
                         type="number"
                         scale="time"
                         domain={["dataMin", "dataMax"]}
+                        padding={{ right: 0 }}
                         dataKey="timestamp"
                         angle={0}
                         minTickGap={15}
@@ -253,10 +265,11 @@ export const UserEpochPNL = () => {
                           });
                         }}
                       />
-                      <YAxis />
+                      <YAxis yAxisId="left" />
+                      <YAxis yAxisId="right" orientation="right" />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend verticalAlign="bottom" formatter={() => "PNL"} />
-                    </LineChart>
+                    </ComposedChart>
                   </ResponsiveContainer>
                 </div>
               </div>
