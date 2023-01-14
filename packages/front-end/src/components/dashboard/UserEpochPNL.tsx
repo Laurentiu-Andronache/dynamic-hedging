@@ -108,7 +108,15 @@ export const UserEpochPNL = () => {
           ? data.depositActions.map(
               (deposit: { id: number; amount: string; epoch: string }) => {
                 amountsByEpoch[deposit.epoch] = {
-                  collateralDeposit: deposit.amount,
+                  collateralDeposit: amountsByEpoch[deposit.epoch]
+                    ?.collateralDeposit
+                    ? // in case user has multiple deposits in the same epoch
+                      BigNumber.from(
+                        amountsByEpoch[deposit.epoch].collateralDeposit
+                      )
+                        .add(BigNumber.from(deposit.amount))
+                        .toString()
+                    : deposit.amount,
                 };
               }
             )
@@ -119,7 +127,14 @@ export const UserEpochPNL = () => {
               (deposit: { id: string; amount: string; epoch: string }) => {
                 amountsByEpoch[deposit.epoch] = {
                   ...amountsByEpoch[deposit.epoch],
-                  sharesWithdraw: deposit.amount,
+                  sharesWithdraw: amountsByEpoch[deposit.epoch]?.sharesWithdraw
+                    ? // in case user has multiple withdraws in the same epoch
+                      BigNumber.from(
+                        amountsByEpoch[deposit.epoch].sharesWithdraw
+                      )
+                        .add(BigNumber.from(deposit.amount))
+                        .toString()
+                    : deposit.amount,
                 };
               }
             )
