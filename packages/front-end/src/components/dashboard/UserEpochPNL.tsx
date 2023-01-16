@@ -69,6 +69,31 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   return null;
 };
 
+const CustomDWLabel = ({ x, y, value }: any) => {
+  if (value === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      <g fill="grey" transform={`rotate(-90, ${x}, ${y})`}>
+        <text
+          x={x}
+          className={"text-white"}
+          y={y}
+          dy={15}
+          dx={value > 0 ? -40 : 40}
+          fill={value > 0 ? "green" : "red"}
+          fontSize={13}
+          textAnchor="middle"
+        >
+          {value} USDC
+        </text>
+      </g>
+    </>
+  );
+};
+
 export const UserEpochPNL = () => {
   const [historicalPNL, setHistoricalPNL] = useState<PNL[]>();
 
@@ -245,7 +270,12 @@ export const UserEpochPNL = () => {
                       margin={{ top: 5, right: 40, bottom: 5, left: 20 }}
                     >
                       <YAxis yAxisId="left" />
-                      <YAxis yAxisId="right" orientation="right" />
+                      <YAxis
+                        yAxisId="right"
+                        orientation="right"
+                        axisLine={false}
+                        hide={true}
+                      />
                       <Tooltip content={<CustomTooltip />} />
                       <Legend verticalAlign="bottom" />
                       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -274,6 +304,7 @@ export const UserEpochPNL = () => {
                         dataKey={({ change }) =>
                           parseFloat(utils.formatUnits(change, DECIMALS.USDC))
                         }
+                        label={<CustomDWLabel />}
                       />
                       <XAxis
                         type="number"
