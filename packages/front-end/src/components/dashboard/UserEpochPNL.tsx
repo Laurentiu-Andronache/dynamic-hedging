@@ -34,9 +34,11 @@ type PNL = {
 
 type PricePerShare = {
   id: string;
-  growthSinceFirstEpoch: string;
+  epoch: string;
   value: string;
+  growthSinceFirstEpoch: string;
   timestamp: string;
+  __typename: string;
 };
 
 const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
