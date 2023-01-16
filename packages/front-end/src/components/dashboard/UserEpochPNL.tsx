@@ -54,7 +54,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
           })}
         </p>
         <p className="label">
-          PnL :{" "}
+          P/L :{" "}
           <NumberFormat
             value={payload[0].value}
             displayType={"text"}

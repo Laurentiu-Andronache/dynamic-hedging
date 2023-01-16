@@ -197,7 +197,7 @@ export const UserVault = () => {
                         </RequiresWalletConnection>
                       </h4>
                       <h4 className="mb-2">
-                        PnL
+                        P/L
                         <RyskTooltip
                           message={`Profit or Losses based on your current ${DHV_NAME} position in USDC net of deposits and withdraws`}
                           color="white"
