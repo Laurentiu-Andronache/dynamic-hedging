@@ -99,6 +99,11 @@ export const UserEpochPNL = () => {
 
   const { account } = useWalletContext();
 
+  // NOTE: why initiateWithdrawActions instead of completeWithdrawActions?
+  // using this query because we need to get the epoch number (not present in withdrawActions)
+  // the users' withdrawal receipt holds the epoch number (that matches when it was initiated + 1)
+  // so it will be processed at that price per share, not latest
+  // and there is no way for user to reverse the withdrawal action
   useQuery(
     gql`
             query {
@@ -117,11 +122,12 @@ export const UserEpochPNL = () => {
                     id
                     amount
                     epoch
+                    timestamp
                 }
             }
         `,
     {
-      onCompleted: (data) => {
+      onCompleted: async (data) => {
         console.log("PNL Epoch:", data);
 
         const amountsByEpoch: {
@@ -131,16 +137,23 @@ export const UserEpochPNL = () => {
           };
         } = {};
 
-        data?.depositActions
-          ? data.depositActions.map(
-              (deposit: { id: number; amount: string; epoch: string }) => {
+        const ppsWithdrawTimestamps: number[] =
+          (data?.pricePerShares &&
+            data.pricePerShares.map(
+              ({ timestamp }: PricePerShare) => timestamp
+            )) ||
+          [];
+
+        data?.initiateWithdrawActions
+          ? data.initiateWithdrawActions.map(
+              (deposit: { id: string; amount: string; epoch: string }) => {
                 amountsByEpoch[deposit.epoch] = {
-                  collateralDeposit: amountsByEpoch[deposit.epoch]
-                    ?.collateralDeposit
-                    ? // in case user has multiple deposits in the same epoch
+                  sharesWithdraw: amountsByEpoch[deposit.epoch]?.sharesWithdraw
+                    ? // in case user has multiple withdraws in the same epoch
                       BigNumber.from(
-                        amountsByEpoch[deposit.epoch].collateralDeposit
+                        amountsByEpoch[deposit.epoch].sharesWithdraw
                       )
+                        // confusing naming, this amount is actually number of shares not collateral
                         .add(BigNumber.from(deposit.amount))
                         .toString()
                     : deposit.amount,
@@ -149,15 +162,33 @@ export const UserEpochPNL = () => {
             )
           : [];
 
-        data?.initiateWithdrawActions
-          ? data.initiateWithdrawActions.map(
-              (deposit: { id: string; amount: string; epoch: string }) => {
-                amountsByEpoch[deposit.epoch] = {
+        data?.depositActions
+          ? data.depositActions.map(
+              (deposit: {
+                id: number;
+                amount: string;
+                epoch: string;
+                timestamp: string;
+              }) => {
+                // find the corresponding withdrawal epoch
+                const index = ppsWithdrawTimestamps.findIndex(
+                  (el) => Number(el) > Number(deposit.timestamp)
+                );
+
+                // NOTE: if epoch is not found, it means there is no corresponding withdrawal
+                // and so we just add those deposits to an upcoming withdrawal epoch
+                // this is because we are just using withdraw epochs to plot pnl
+                // as deposit epochs are not present in the graph
+                const epochMapping =
+                  (index === -1 ? ppsWithdrawTimestamps.length : index) + 1;
+
+                amountsByEpoch[epochMapping] = {
                   ...amountsByEpoch[deposit.epoch],
-                  sharesWithdraw: amountsByEpoch[deposit.epoch]?.sharesWithdraw
-                    ? // in case user has multiple withdraws in the same epoch
+                  collateralDeposit: amountsByEpoch[deposit.epoch]
+                    ?.collateralDeposit
+                    ? // in case user has multiple deposits in the same epoch
                       BigNumber.from(
-                        amountsByEpoch[deposit.epoch].sharesWithdraw
+                        amountsByEpoch[deposit.epoch].collateralDeposit
                       )
                         .add(BigNumber.from(deposit.amount))
                         .toString()
@@ -185,13 +216,15 @@ export const UserEpochPNL = () => {
               console.log("Date Locale: ", dateLocale);
 
               // pps price is 18 decimals and usdc deposits are 6 decimals
+
               const collateralDeposit =
                 amountsByEpoch[ppsEpoch.id]?.collateralDeposit || "0";
+
               const sharesWithdraw =
                 amountsByEpoch[ppsEpoch.id]?.sharesWithdraw || "0";
 
               const sharesWithdrawAsCollateral = BigNumber.from(sharesWithdraw)
-                .div(ppsEpoch.value)
+                .div(ppsEpoch.value) // withdrawalEpochPricePerShare
                 .mul(BIG_NUMBER_DECIMALS.RYSK) // back to RYSK (18) based
                 .div(BIG_NUMBER_DECIMALS.RYSK.div(BIG_NUMBER_DECIMALS.USDC)); // now USDC (6) based
 
