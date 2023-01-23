@@ -328,7 +328,7 @@ export const UserEpochPNL = () => {
                         legendType="line"
                       />
                       <Bar
-                        name="D/W"
+                        name="Deposits / Withdrawals"
                         legendType="rect"
                         yAxisId="right"
                         /** TODO bar size doesn't work with current scale and type on xAxis */
