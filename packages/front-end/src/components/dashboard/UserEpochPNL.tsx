@@ -70,7 +70,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 };
 
 const CustomDWLabel = ({ x, y, value }: any) => {
-  if (value === 0) {
+  if (value === "0.00") {
     return null;
   }
 
@@ -82,7 +82,7 @@ const CustomDWLabel = ({ x, y, value }: any) => {
           className={"text-white"}
           y={y}
           dy={15}
-          dx={value > 0 ? -40 : 40}
+          dx={value > 0 ? -50 : 50}
           fill={value > 0 ? "green" : "red"}
           fontSize={13}
           textAnchor="middle"
@@ -224,8 +224,8 @@ export const UserEpochPNL = () => {
                 amountsByEpoch[ppsEpoch.id]?.sharesWithdraw || "0";
 
               const sharesWithdrawAsCollateral = BigNumber.from(sharesWithdraw)
-                .div(ppsEpoch.value) // withdrawalEpochPricePerShare
-                .mul(BIG_NUMBER_DECIMALS.RYSK) // back to RYSK (18) based
+                .mul(ppsEpoch.value) // withdrawalEpochPricePerShare
+                .div(BIG_NUMBER_DECIMALS.RYSK) // back to RYSK (18) based
                 .div(BIG_NUMBER_DECIMALS.RYSK.div(BIG_NUMBER_DECIMALS.USDC)); // now USDC (6) based
 
               const collateralDepositInRyskDecimals = BigNumber.from(
@@ -239,8 +239,8 @@ export const UserEpochPNL = () => {
 
               // Deposit / PPS = Number of Shares deposited
               const iShares = collateralDepositInRyskDecimals
-                .div(BigNumber.from(ppsEpoch.value))
-                .mul(BIG_NUMBER_DECIMALS.RYSK); // multiply back to RYSK (18) decimals
+                .mul(BIG_NUMBER_DECIMALS.RYSK) // multiply to RYSK (18) decimals
+                .div(BigNumber.from(ppsEpoch.value)); // division keeps 18 decimals
 
               console.log(
                 "Number of shares deposited in this epoch: ",
@@ -335,7 +335,9 @@ export const UserEpochPNL = () => {
                         barSize={20}
                         fill={"#64748b"}
                         dataKey={({ change }) =>
-                          parseFloat(utils.formatUnits(change, DECIMALS.USDC))
+                          parseFloat(
+                            utils.formatUnits(change, DECIMALS.USDC)
+                          ).toFixed(2)
                         }
                         label={<CustomDWLabel />}
                       />
