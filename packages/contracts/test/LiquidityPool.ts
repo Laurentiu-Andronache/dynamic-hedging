@@ -490,6 +490,7 @@ describe("Liquidity Pools", async () => {
 			optionSeries.strike,
 			optionSeries.collateral,
 			catalogue,
+			portfolioValuesFeed,
 			optionSeries.expiration,
 			optionSeries.isPut
 		)
@@ -544,6 +545,7 @@ describe("Liquidity Pools", async () => {
 		const slippageFactor = await applySlippageLocally(
 			pricer,
 			catalogue,
+			portfolioValuesFeed,
 			optionSeries,
 			amount,
 			localDelta.div(parseFloat(fromWei(amount))),
@@ -1160,6 +1162,7 @@ describe("Liquidity Pools", async () => {
 			strikePrice,
 			usd.address,
 			catalogue,
+			portfolioValuesFeed,
 			expiration,
 			PUT_FLAVOR
 		)
@@ -1194,6 +1197,7 @@ describe("Liquidity Pools", async () => {
 		const slippageFactor = await applySlippageLocally(
 			pricer,
 			catalogue,
+			portfolioValuesFeed,
 			proposedSeries,
 			amount,
 			localDelta.div(parseFloat(fromWei(amount))),
@@ -1505,6 +1509,7 @@ describe("Liquidity Pools", async () => {
 			seriesInfo.strike.mul(ethers.utils.parseUnits("1", 10)),
 			usd.address,
 			catalogue,
+			portfolioValuesFeed,
 			expiration,
 			PUT_FLAVOR
 		)
@@ -1540,6 +1545,7 @@ describe("Liquidity Pools", async () => {
 		const slippageFactor = await applySlippageLocally(
 			pricer,
 			catalogue,
+			portfolioValuesFeed,
 			seriesInfoDecimalCorrected,
 			amount,
 			localDelta.div(parseFloat(fromWei(amount))),
@@ -1688,6 +1694,7 @@ describe("Liquidity Pools", async () => {
 			strikePrice,
 			usd.address,
 			catalogue,
+			portfolioValuesFeed,
 			expiration2,
 			PUT_FLAVOR
 		)
@@ -1733,6 +1740,7 @@ describe("Liquidity Pools", async () => {
 		const slippageFactor = await applySlippageLocally(
 			pricer,
 			catalogue,
+			portfolioValuesFeed,
 			proposedSeries,
 			amount,
 			localDelta.div(parseFloat(fromWei(amount))),
@@ -1830,6 +1838,7 @@ describe("Liquidity Pools", async () => {
 			seriesInfo.strike.mul(ethers.utils.parseUnits("1", 10)),
 			usd.address,
 			catalogue,
+			portfolioValuesFeed,
 			seriesInfo.expiration,
 			PUT_FLAVOR
 		)
@@ -1869,6 +1878,7 @@ describe("Liquidity Pools", async () => {
 		const slippageFactor = await applySlippageLocally(
 			pricer,
 			catalogue,
+			portfolioValuesFeed,
 			seriesInfoDecimalCorrected,
 			amount,
 			localDelta.div(parseFloat(fromWei(amount))),
@@ -1976,6 +1986,7 @@ describe("Liquidity Pools", async () => {
 			seriesInfo.strike.mul(ethers.utils.parseUnits("1", 10)),
 			seriesInfo.collateral,
 			catalogue,
+			portfolioValuesFeed,
 			seriesInfo.expiration,
 			seriesInfo.isPut
 		)
@@ -2028,6 +2039,7 @@ describe("Liquidity Pools", async () => {
 			pricer,
 			true,
 			catalogue,
+			portfolioValuesFeed,
 			localDelta.div(amount.div(toWei("1"))),
 			toWei("0").sub(toWei("50"))
 		)
@@ -2249,6 +2261,7 @@ describe("Liquidity Pools", async () => {
 		const slippageFactor = await applySlippageLocally(
 			pricer,
 			catalogue,
+			portfolioValuesFeed,
 			optionSeries,
 			amount,
 			localDelta.div(parseFloat(fromWei(amount))),

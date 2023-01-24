@@ -437,7 +437,7 @@ describe("Liquidity Pool with alpha tests", async () => {
 			const prevalues = await portfolioValuesFeed.getPortfolioValues(weth.address, usd.address)
 			const ephemeralDeltaBefore = await liquidityPool.ephemeralDelta()
 			const ephemeralLiabilitiesBefore = await liquidityPool.ephemeralLiabilities()
-			const netDhvExposureBefore = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
+			const netDhvExposureBefore = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, portfolioValuesFeed, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
 			const expectedCollateralAllocated = await optionRegistry.getCollateral(
 				{
 					expiration: orderDeets.optionSeries.expiration,
@@ -505,7 +505,7 @@ describe("Liquidity Pool with alpha tests", async () => {
 			const buyerBalAfter = await usd.balanceOf(receiverAddress)
 			const receiverBalAfter = await usd.balanceOf(receiverAddress)
 			const collateralAllocatedAfter = await liquidityPool.collateralAllocated()
-			const netDhvExposureAfter = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
+			const netDhvExposureAfter = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, portfolioValuesFeed, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
 			const collateralAllocatedDiff = tFormatUSDC(
 				collateralAllocatedAfter.sub(collateralAllocatedBefore)
 			)
@@ -921,7 +921,7 @@ describe("Liquidity Pool with alpha tests", async () => {
 			const prevalues = await portfolioValuesFeed.getPortfolioValues(weth.address, usd.address)
 			const ephemeralDeltaBefore = await liquidityPool.ephemeralDelta()
 			const ephemeralLiabilitiesBefore = await liquidityPool.ephemeralLiabilities()
-			const netDhvExposureBefore = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
+			const netDhvExposureBefore = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, portfolioValuesFeed, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
 
 			const expectedCollateralAllocated = await optionRegistry.getCollateral(
 				{
@@ -989,7 +989,7 @@ describe("Liquidity Pool with alpha tests", async () => {
 			const buyerBalAfter = await usd.balanceOf(receiverAddress)
 			const receiverBalAfter = await usd.balanceOf(receiverAddress)
 			const collateralAllocatedAfter = await liquidityPool.collateralAllocated()
-			const netDhvExposureAfter = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
+			const netDhvExposureAfter = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, portfolioValuesFeed, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
 			const collateralAllocatedDiff = tFormatUSDC(
 				collateralAllocatedAfter.sub(collateralAllocatedBefore)
 			)
@@ -1189,7 +1189,7 @@ describe("Liquidity Pool with alpha tests", async () => {
 			const ephemeralDeltaBefore = await liquidityPool.ephemeralDelta()
 			const ephemeralLiabilitiesBefore = await liquidityPool.ephemeralLiabilities()
 			const receiverOTokenBalBefore = await optionToken.balanceOf(receiverAddress)
-			const netDhvExposureBefore = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
+			const netDhvExposureBefore = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, portfolioValuesFeed, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
 			const expectedCollateralAllocated = await optionRegistry.getCollateral(
 				{
 					expiration: orderDeets.optionSeries.expiration,
@@ -1257,7 +1257,7 @@ describe("Liquidity Pool with alpha tests", async () => {
 			const buyerBalAfter = await usd.balanceOf(receiverAddress)
 			const receiverBalAfter = await usd.balanceOf(receiverAddress)
 			const collateralAllocatedAfter = await liquidityPool.collateralAllocated()
-			const netDhvExposureAfter = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
+			const netDhvExposureAfter = await getNetDhvExposure(orderDeets.optionSeries.strike.mul(utils.parseUnits("1", 10)), orderDeets.optionSeries.collateral, catalogue, portfolioValuesFeed, orderDeets.optionSeries.expiration, orderDeets.optionSeries.isPut)
 			const collateralAllocatedDiff = tFormatUSDC(
 				collateralAllocatedBefore.sub(collateralAllocatedAfter)
 			)
