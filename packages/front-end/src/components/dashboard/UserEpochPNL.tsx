@@ -144,59 +144,55 @@ export const UserEpochPNL = () => {
             )) ||
           [];
 
-        data?.initiateWithdrawActions
-          ? data.initiateWithdrawActions.map(
-              (deposit: { id: string; amount: string; epoch: string }) => {
-                amountsByEpoch[deposit.epoch] = {
-                  sharesWithdraw: amountsByEpoch[deposit.epoch]?.sharesWithdraw
-                    ? // in case user has multiple withdraws in the same epoch
-                      BigNumber.from(
-                        amountsByEpoch[deposit.epoch].sharesWithdraw
-                      )
-                        // confusing naming, this amount is actually number of shares not collateral
-                        .add(BigNumber.from(deposit.amount))
-                        .toString()
-                    : deposit.amount,
-                };
-              }
-            )
-          : [];
+        data?.initiateWithdrawActions &&
+          data.initiateWithdrawActions.map(
+            (deposit: { id: string; amount: string; epoch: string }) => {
+              amountsByEpoch[deposit.epoch] = {
+                sharesWithdraw: amountsByEpoch[deposit.epoch]?.sharesWithdraw
+                  ? // in case user has multiple withdraws in the same epoch
+                    BigNumber.from(amountsByEpoch[deposit.epoch].sharesWithdraw)
+                      // confusing naming, this amount is actually number of shares not collateral
+                      .add(BigNumber.from(deposit.amount))
+                      .toString()
+                  : deposit.amount,
+              };
+            }
+          );
 
-        data?.depositActions
-          ? data.depositActions.map(
-              (deposit: {
-                id: number;
-                amount: string;
-                epoch: string;
-                timestamp: string;
-              }) => {
-                // find the corresponding withdrawal epoch
-                const index = ppsWithdrawTimestamps.findIndex(
-                  (el) => Number(el) > Number(deposit.timestamp)
-                );
+        data?.depositActions &&
+          data.depositActions.map(
+            (deposit: {
+              id: number;
+              amount: string;
+              epoch: string;
+              timestamp: string;
+            }) => {
+              // find the corresponding withdrawal epoch
+              const index = ppsWithdrawTimestamps.findIndex(
+                (el) => Number(el) > Number(deposit.timestamp)
+              );
 
-                // NOTE: if epoch is not found, it means there is no corresponding withdrawal
-                // and so we just add those deposits to an upcoming withdrawal epoch
-                // this is because we are just using withdraw epochs to plot pnl
-                // as deposit epochs are not present in the graph
-                const epochMapping =
-                  (index === -1 ? ppsWithdrawTimestamps.length : index) + 1;
+              // NOTE: if epoch is not found, it means there is no corresponding withdrawal
+              // and so we just add those deposits to an upcoming withdrawal epoch
+              // this is because we are just using withdraw epochs to plot pnl
+              // as deposit epochs are not present in the graph
+              const epochMapping =
+                (index === -1 ? ppsWithdrawTimestamps.length : index) + 1;
 
-                amountsByEpoch[epochMapping] = {
-                  ...amountsByEpoch[deposit.epoch],
-                  collateralDeposit: amountsByEpoch[deposit.epoch]
-                    ?.collateralDeposit
-                    ? // in case user has multiple deposits in the same epoch
-                      BigNumber.from(
-                        amountsByEpoch[deposit.epoch].collateralDeposit
-                      )
-                        .add(BigNumber.from(deposit.amount))
-                        .toString()
-                    : deposit.amount,
-                };
-              }
-            )
-          : [];
+              amountsByEpoch[epochMapping] = {
+                ...amountsByEpoch[deposit.epoch],
+                collateralDeposit: amountsByEpoch[deposit.epoch]
+                  ?.collateralDeposit
+                  ? // in case user has multiple deposits in the same epoch
+                    BigNumber.from(
+                      amountsByEpoch[deposit.epoch].collateralDeposit
+                    )
+                      .add(BigNumber.from(deposit.amount))
+                      .toString()
+                  : deposit.amount,
+              };
+            }
+          );
 
         const tempPNL: PNL[] = [];
 
