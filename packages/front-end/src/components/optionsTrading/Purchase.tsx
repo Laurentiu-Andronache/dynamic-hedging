@@ -29,7 +29,6 @@ const DUMMY_OPTION_SERIES: OptionSeries = {
   isPut: false,
 };
 
-export const Purchase = () => {
 const formatOptionDate = (date: Date | null) => {
   const expirationDate = date
     ?.toLocaleString("en-GB", {
@@ -47,7 +46,7 @@ const formatOptionDate = (date: Date | null) => {
   );
 };
 
-export const Purchase: React.FC = () => {
+export const Purchase = () => {
   // Context state
   const {
     state: { settings },
@@ -64,7 +63,7 @@ export const Purchase: React.FC = () => {
   const [isApproved, setIsApproved] = useState(false);
 
   // Contracts
-  const [optionRegistryContract, optionRegistryContractCall] = useContract({
+  const [optionRegistryContract] = useContract({
     contract: "OpynOptionRegistry",
     ABI: OptionRegistryABI,
     readOnly: false,
