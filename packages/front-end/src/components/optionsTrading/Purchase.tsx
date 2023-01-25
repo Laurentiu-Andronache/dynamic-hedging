@@ -1,10 +1,11 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { ethers } from "ethers";
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
+
 import ERC20ABI from "../../abis/erc20.json";
 import { useWalletContext } from "../../App";
-import OptionHandlerABI from "../../abis/OptionHandler.json";
+import OptionHandlerABI from "../../abis/AlphaOptionHandler.json";
 import OptionRegistryABI from "../../abis/OptionRegistry.json";
 import {
   BIG_NUMBER_DECIMALS,
@@ -28,6 +29,7 @@ const DUMMY_OPTION_SERIES: OptionSeries = {
   isPut: false,
 };
 
+export const Purchase = () => {
 const formatOptionDate = (date: Date | null) => {
   const expirationDate = date
     ?.toLocaleString("en-GB", {

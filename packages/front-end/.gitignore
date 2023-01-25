@@ -1,1 +1,6 @@
 build/
+src/artifacts/
+
+# ignore lock files
+package-lock.json
+yarn.lock

@@ -1,4 +1,5 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+
 import { useOnClickOutside } from "../../hooks/useOnClickOutside";
 import { useOptionsTradingContext } from "../../state/OptionsTradingContext";
 import { OptionsTradingActionType } from "../../state/types";
@@ -7,7 +8,7 @@ import { formatShortDate } from "../../utils/formatShortDate";
 import { getSuggestedExpiryDates } from "../../utils/getSuggestedExpiryDates";
 import { RadioButtonList } from "../shared/RadioButtonList";
 
-export const ExpiryDatePicker: React.FC = () => {
+export const ExpiryDatePicker = () => {
   const {
     state: { expiryDate },
     dispatch,

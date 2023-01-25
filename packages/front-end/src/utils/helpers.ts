@@ -10,13 +10,10 @@ import { LiquidityPool } from "../types/LiquidityPool";
 import { ERC20 } from "../types/ERC20";
 import { OptionRegistry } from "../types/OptionRegistry";
 import { PriceFeed } from "../types/PriceFeed";
-import { PortfolioValuesFeed } from "../types/PortfolioValuesFeed";
+import { AlphaPortfolioValuesFeed } from "../types/AlphaPortfolioValuesFeed";
 
-//@ts-ignore
 import bs from "black-scholes";
-//@ts-ignore
 import greeks from "greeks";
-//@ts-ignore
 import impliedVol from "implied-volatility";
 
 const rfr = "0.03";
@@ -28,7 +25,7 @@ const yIntercept = -0.84;
 export async function calculateOptionQuoteLocally(
   liquidityPool: LiquidityPool,
   optionRegistry: OptionRegistry,
-  portfolioValuesFeed: PortfolioValuesFeed,
+  portfolioValuesFeed: AlphaPortfolioValuesFeed,
   collateralAsset: ERC20,
   priceFeed: PriceFeed,
   optionSeries: {

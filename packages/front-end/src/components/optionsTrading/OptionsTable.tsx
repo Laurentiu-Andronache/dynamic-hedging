@@ -1,4 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
+import NumberFormat from "react-number-format";
+import PVFABI from "../../abis/AlphaPortfolioValuesFeed.json";
+import ERC20ABI from "../../abis/erc20.json";
+import LPABI from "../../abis/LiquidityPool.json";
+import ORABI from "../../abis/OptionRegistry.json";
+import PFABI from "../../abis/PriceFeed.json";
+import { useWalletContext } from "../../App";
+import addresses from "../../contracts.json";
+import { useContract } from "../../hooks/useContract";
 import { useGlobalContext } from "../../state/GlobalContext";
 import { useOptionsTradingContext } from "../../state/OptionsTradingContext";
 import {
@@ -6,29 +16,18 @@ import {
   OptionsTradingActionType,
   OptionType,
 } from "../../state/types";
-import LPABI from "../../abis/LiquidityPool.json";
-import ORABI from "../../abis/OptionRegistry.json";
-import ERC20ABI from "../../abis/erc20.json";
-import PFABI from "../../abis/PriceFeed.json";
-import PVFABI from "../../abis/PortfolioValuesFeed.json";
+import { ContractAddresses, ETHNetwork } from "../../types";
+import { ERC20 } from "../../types/ERC20";
+import { LiquidityPool } from "../../types/LiquidityPool";
+import { OptionRegistry } from "../../types/OptionRegistry";
+import { AlphaPortfolioValuesFeed } from "../../types/AlphaPortfolioValuesFeed";
+import { PriceFeed } from "../../types/PriceFeed";
+import { fromWei, toWei } from "../../utils/conversion-helper";
 import {
-  calculateOptionQuoteLocally,
   calculateOptionDeltaLocally,
+  calculateOptionQuoteLocally,
   returnIVFromQuote,
 } from "../../utils/helpers";
-import { useContract } from "../../hooks/useContract";
-import { toWei, fromWei } from "../../utils/conversion-helper";
-import NumberFormat from "react-number-format";
-import addresses from "../../contracts.json";
-import { useWalletContext } from "../../App";
-import {
-  ERC20,
-  PortfolioValuesFeed,
-  PriceFeed,
-  LiquidityPool,
-  OptionRegistry,
-} from "../../types/index";
-import { ContractAddresses, ETHNetwork } from "../../types";
 
 const isNotTwoDigitsZero = (price: number) => {
   // TODO: Not sure this makes sense, come back to it after figuring out pricing
@@ -40,7 +39,7 @@ const suggestedPutOptionPriceDiff = [
   -800, -600, -400, -300, -200, -100, 0, 100,
 ];
 
-export const OptionsTable: React.FC = () => {
+export const OptionsTable = () => {
   const {
     state: { ethPrice },
   } = useGlobalContext();
@@ -121,7 +120,7 @@ export const OptionsTable: React.FC = () => {
             const localQuote = await calculateOptionQuoteLocally(
               liquidityPool as LiquidityPool,
               optionRegistry as OptionRegistry,
-              portfolioValuesFeed as PortfolioValuesFeed,
+              portfolioValuesFeed as AlphaPortfolioValuesFeed,
               usdc as ERC20,
               priceFeed as PriceFeed,
               optionSeries,
