@@ -44,6 +44,7 @@ export type RyskContractAddresses = {
   optionHandler: string;
   opynInteractions: string;
   normDist: string;
+  beyondPricer: string;
   BlackScholes: string;
   optionsCompute: string;
 };
