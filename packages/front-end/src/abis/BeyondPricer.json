@@ -15,6 +15,46 @@
         "internalType": "address",
         "name": "_liquidityPool",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_addressBook",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_slippageGradient",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_deltaBandWidth",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_callSlippageGradientMultipliers",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_putSlippageGradientMultipliers",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_collateralLendingRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_shortDeltaBorrowRate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_longDeltaBorrowRate",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -27,7 +67,60 @@
   },
   {
     "inputs": [],
+    "name": "InvalidSlippageGradientMultiplierValue",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSlippageGradientMultipliersArrayLength",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "OptionExpiryInvalid",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PRBMathSD59x18__AbsInputTooSmall",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PRBMathSD59x18__DivInputTooSmall",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "rAbs",
+        "type": "uint256"
+      }
+    ],
+    "name": "PRBMathSD59x18__DivOverflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "int256",
+        "name": "x",
+        "type": "int256"
+      }
+    ],
+    "name": "PRBMathSD59x18__Exp2InputTooBig",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "int256",
+        "name": "x",
+        "type": "int256"
+      }
+    ],
+    "name": "PRBMathSD59x18__LogInputTooSmall",
     "type": "error"
   },
   {
@@ -50,11 +143,49 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      }
+    ],
+    "name": "PRBMathUD60x18__Exp2InputTooBig",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "x",
+        "type": "uint256"
+      }
+    ],
+    "name": "PRBMathUD60x18__LogInputTooSmall",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "prod1",
         "type": "uint256"
       }
     ],
     "name": "PRBMath__MulDivFixedPointOverflow",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "prod1",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "denominator",
+        "type": "uint256"
+      }
+    ],
+    "name": "PRBMath__MulDivOverflow",
     "type": "error"
   },
   {
@@ -81,6 +212,25 @@
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "newBidAskIVSpread",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldBidAskIVSpread",
+        "type": "uint256"
+      }
+    ],
+    "name": "BidAskIVSpreadChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "newFeePerContract",
         "type": "uint256"
       },
@@ -93,6 +243,38 @@
     ],
     "name": "FeePerContractChanged",
     "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newRiskFreeRate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldRiskFreeRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "RiskFreeRateChanged",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "addressBook",
+    "outputs": [
+      {
+        "internalType": "contract AddressBookInterface",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -121,6 +303,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "callSlippageGradientMultipliers",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "collateralAsset",
     "outputs": [
@@ -128,6 +329,32 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "collateralLendingRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "deltaBandWidth",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -148,6 +375,32 @@
   },
   {
     "inputs": [],
+    "name": "getCallSlippageGradientMultipliers",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPutSlippageGradientMultipliers",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "liquidityPool",
     "outputs": [
       {
@@ -161,12 +414,44 @@
   },
   {
     "inputs": [],
+    "name": "longDeltaBorrowRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "protocol",
     "outputs": [
       {
         "internalType": "contract Protocol",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "putSlippageGradientMultipliers",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -220,6 +505,11 @@
         "internalType": "bool",
         "name": "isSell",
         "type": "bool"
+      },
+      {
+        "internalType": "int256",
+        "name": "netDhvExposure",
+        "type": "int256"
       }
     ],
     "name": "quoteOptionPrice",
@@ -273,6 +563,55 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_bidAskIVSpread",
+        "type": "uint256"
+      }
+    ],
+    "name": "setBidAskIVSpread",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_collateralLendingRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCollateralLendingRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_deltaBandWidth",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_callSlippageGradientMultipliers",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_putSlippageGradientMultipliers",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "setDeltaBandWidth",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "_feePerContract",
         "type": "uint256"
       }
@@ -280,6 +619,102 @@
     "name": "setFeePerContract",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_longDeltaBorrowRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setLongDeltaBorrowRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_riskFreeRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setRiskFreeRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_shortDeltaBorrowRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "setShortDeltaBorrowRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_slippageGradient",
+        "type": "uint256"
+      }
+    ],
+    "name": "setSlippageGradient",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "_callSlippageGradientMultipliers",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_putSlippageGradientMultipliers",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "setSlippageGradientMultipliers",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "shortDeltaBorrowRate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "slippageGradient",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
