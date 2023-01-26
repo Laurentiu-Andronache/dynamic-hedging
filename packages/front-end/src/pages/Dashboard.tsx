@@ -1,13 +1,12 @@
 import { UserVault } from "../components/dashboard/UserVault";
-import { UserOptionsList } from "../components/dashboard/UserOptionsList";
+import { UserOptions } from "../components/dashboard/UserOptions";
 
 export const Dashboard = () => {
   return (
     <div className="col-start-1 col-end-17">
-      <div className="w-full mb-24">
+      <div>
         <UserVault />
-
-        <UserOptionsList />
+        <UserOptions />
       </div>
     </div>
   );
