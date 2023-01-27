@@ -70,7 +70,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
 };
 
 const CustomDWLabel = ({ x, y, value }: any) => {
-  if (value === "0.00") {
+  if (value === 0) {
     return null;
   }
 
@@ -79,7 +79,6 @@ const CustomDWLabel = ({ x, y, value }: any) => {
       <g fill="grey" transform={`rotate(-90, ${x}, ${y})`}>
         <text
           x={x}
-          className={"text-white"}
           y={y}
           dy={15}
           dx={value > 0 ? -50 : 50}
@@ -87,7 +86,7 @@ const CustomDWLabel = ({ x, y, value }: any) => {
           fontSize={13}
           textAnchor="middle"
         >
-          {value} USDC
+          ${value.toFixed(2)}
         </text>
       </g>
     </>
@@ -298,18 +297,32 @@ export const UserEpochPNL = () => {
                       data={historicalPNL}
                       margin={{ top: 5, right: 40, bottom: 5, left: 20 }}
                     >
-                      <YAxis yAxisId="left" />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Legend verticalAlign="bottom" />
+                      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                       <YAxis
                         yAxisId="right"
                         orientation="right"
                         axisLine={false}
                         hide={true}
                       />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Legend verticalAlign="bottom" />
-                      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-
                       {/** TODO might want to show Line of user USDC position over epochs */}
+                      <Bar
+                        name="Deposits/Withdrawals"
+                        legendType="none"
+                        yAxisId="right"
+                        /** TODO bar size doesn't work with current scale and type on xAxis */
+                        barSize={20}
+                        fill={"#64748b"}
+                        dataKey={({ change }) =>
+                          parseFloat(utils.formatUnits(change, DECIMALS.USDC))
+                        }
+                        label={<CustomDWLabel />}
+                      />
+                      <YAxis
+                        yAxisId="left"
+                        tickFormatter={(value: string) => `$${value}`}
+                      />
                       <Line
                         name="P/L"
                         yAxisId="left"
@@ -323,25 +336,10 @@ export const UserEpochPNL = () => {
                         dot={false}
                         legendType="line"
                       />
-                      <Bar
-                        name="Deposits / Withdrawals"
-                        legendType="rect"
-                        yAxisId="right"
-                        /** TODO bar size doesn't work with current scale and type on xAxis */
-                        barSize={20}
-                        fill={"#64748b"}
-                        dataKey={({ change }) =>
-                          parseFloat(
-                            utils.formatUnits(change, DECIMALS.USDC)
-                          ).toFixed(2)
-                        }
-                        label={<CustomDWLabel />}
-                      />
                       <XAxis
                         type="number"
                         scale="time"
                         domain={["dataMin", "dataMax"]}
-                        padding={{ right: 0 }}
                         dataKey="timestamp"
                         angle={0}
                         minTickGap={15}
